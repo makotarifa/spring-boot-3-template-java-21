@@ -1,5 +1,6 @@
 plugins {
-    java
+    `java-library`
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.angelmorando"
@@ -8,10 +9,10 @@ version = "0.0.1-SNAPSHOT"
 repositories { mavenCentral() }
 
 dependencies {
-    implementation(project(":app-domain"))
-    implementation(project(":common"))
-    implementation("org.springframework.boot:spring-boot-starter")
+    api("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
+java { toolchain.languageVersion.set(JavaLanguageVersion.of(21)) }

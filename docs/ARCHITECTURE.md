@@ -4,9 +4,12 @@ Esta guía describe cómo estructurar el proyecto para facilitar una futura sepa
 
 1. Estructura de paquetes y módulos
    - `app-runner` (módulo principal): contiene la aplicación Spring Boot, controladores y lógica de negocio.
-    - `common` (módulo compartido): DTOs, excepciones y utilidades que pueden ser compartidas entre servicios.
-   - `app-runner` (módulo principal): módulo ejecutable que arranca Spring Boot, compone `app-api`, `app-service` y `app-persistence`.
-    - `app-api`: controladores y DTOs expuestos al exterior (REST API).
+   - `common` (módulo compartido): excepciones y utilidades que pueden ser compartidas entre servicios.
+   - `app-domain` (módulo de dominio): entidades, objetos de valor (VO) y repositorios (interfaces) del dominio.
+   - `app-dtos` (módulo de DTO): DTOs compartidos por la API, usados por `app-api`.
+   - `app-mappers` (módulo de mapeo): mapeadores entre `domain` <-> `dto` (MapStruct o instancias manuales).
+   - `app-runner` (módulo principal): módulo ejecutable que arranca Spring Boot y compone `app-api`, `app-service` y `app-persistence`.
+   - `app-api`: controladores y DTOs expuestos al exterior (REST API). Depende de `app-service`, `app-dtos` y `app-mappers`.
     - `app-service`: lógica de negocio y servicios.
     - `app-persistence`: persistencia, mappers, DAOs y repositorios (encargados de consultar base de datos).
 
@@ -26,7 +29,7 @@ Al adoptar un diseño multi-módulo, puedes extraer servicios en el futuro en m�
    - `controller`: Controladores REST (expuestos al exterior).
    - `service`: Lógica de negocio.
    - `repository`: Acceso a datos (MyBatis mappers/repositorios).
-   - `dto`: Objetos de transferencia y respuestas.
+   - `dto`: Objetos de transferencia y respuestas; preferentemente en su propio módulo `app-dtos`.
    - `config`: Configuraciones, beans comunes, CORS, etc.
    - `security`: Configuración y filtros de seguridad.
    - `exception`: Manejadores y DTOs de error centralizados.
@@ -36,10 +39,10 @@ Al adoptar un diseño multi-módulo, puedes extraer servicios en el futuro en m�
    - Repository: expone la API de dominio (operaciones como `save`, `find`, `findAll`) y utiliza la DAO internamente. Esto ayuda a mantener la lógica de negocio desacoplada de la tecnología de persistencia.
 
    Implementación actual en el proyecto:
-   - DTO `AppTest` se encuentra en `common`.
+   - DTO `AppTestDto` se encuentra en `app-dtos` (antes en `common`).
    - Mapper MyBatis `AppTestMapper` y su XML controlan las consultas SQL.
    - `AppTestDao` usa el mapper para ejecutar consultas.
-   - `AppTestRepository` y `AppTestRepositoryImpl` exponen la API de dominio a la aplicación.
+   - `AppTestRepository` (interface) se encuentra en `app-domain` y `AppTestRepositoryImpl` en `app-persistence` como implementación.
 
    Mantener una separación clara facilita extraer módulos/microservicios: cada microservicio tendría su propio `controller` y `service` pero podrían compartir `dto`, `security` y `exception` en una librería común.
 

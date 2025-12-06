@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.angelmorando.template.dao.AppTestDao;
-import com.angelmorando.template.dto.AppTest;
-import com.angelmorando.template.repository.AppTestRepository;
+import com.angelmorando.template.domain.model.AppTest;
+import com.angelmorando.template.domain.repository.AppTestRepository;
 
 import lombok.RequiredArgsConstructor;
 

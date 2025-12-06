@@ -9,6 +9,7 @@ repositories { mavenCentral() }
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":app-domain"))
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5")
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
