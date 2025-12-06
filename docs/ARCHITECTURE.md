@@ -1,0 +1,59 @@
+# Preparando la arquitectura para microservicios
+
+Esta guía describe cómo estructurar el proyecto para facilitar una futura separación en microservicios y cómo preparar OAuth y manejo centralizado de errores.
+
+1. Estructura de paquetes y módulos
+    - `app` (módulo principal): contiene la aplicación Spring Boot, controladores y lógica de negocio.
+    - `common` (módulo compartido): DTOs, excepciones y utilidades que pueden ser compartidas entre servicios.
+
+Ejemplo de estructura del proyecto (multi-módulo):
+
+- common/
+   - src/main/java/com/angelmorando/template/exception
+   - src/main/java/com/angelmorando/template/dto
+- app/
+   - src/main/java/com/angelmorando/template/controller
+   - src/main/java/com/angelmorando/template/service
+   - src/main/resources
+
+Al adoptar un diseño multi-módulo, puedes extraer servicios en el futuro en módulos independientes.
+
+2. Estructura de paquetes
+   - `controller`: Controladores REST (expuestos al exterior).
+   - `service`: Lógica de negocio.
+   - `repository`: Acceso a datos (MyBatis mappers/repositorios).
+   - `dto`: Objetos de transferencia y respuestas.
+   - `config`: Configuraciones, beans comunes, CORS, etc.
+   - `security`: Configuración y filtros de seguridad.
+   - `exception`: Manejadores y DTOs de error centralizados.
+
+   Mantener una separación clara facilita extraer módulos/microservicios: cada microservicio tendría su propio `controller` y `service` pero podrían compartir `dto`, `security` y `exception` en una librería común.
+
+2. Autenticación y autorización (OAuth2/JWT)
+   - Use `spring-boot-starter-oauth2-resource-server` para exponer el servicio como recurso protegido mediante JWTs.
+   - Configure `spring.security.oauth2.resourceserver.jwt.jwk-set-uri` para apuntar al servidor de autorización (JWK uri).
+   - Para una API pública que también acepte inicios de sesión de usuario, agregue `spring-boot-starter-oauth2-client`.
+
+3. Manejo de errores
+   - Centralice con `@ControllerAdvice` y `ApiError` para respuestas consistentes.
+   - Use códigos HTTP correctos y mensajes apropiados para clientes front-end.
+
+4. Infraestructura
+   - Docker / docker-compose para desarrollo local (ya incluido).
+   - Para producción: K8s + Helm o una plataforma de PaaS.
+   - CI/CD: build/publish per microservice + integration tests.
+
+   7. OpenAPI / Swagger
+      - Add `springdoc-openapi-starter-webmvc-ui` to `app` module.
+      - Default docs are available at `/v3/api-docs` and Swagger UI at `/swagger-ui/index.html`.
+      - Keep DTOs and API contract stable in `common` so microservices can share contract libraries if needed.
+
+5. Separación en microservicios
+   - Empiece separando por contexto de negocio (dominios): e.g., `users`, `orders`, `payments`.
+   - Mantenga contratos (DTOs) estables y documentados (OpenAPI).
+   - Considere un API Gateway + AuthN/AuthZ centralizado.
+
+6. Otras recomendaciones
+   - Añadir `spring-boot-starter-actuator` y `micrometer` para monitorización.
+   - Añadir `OpenAPI/Swagger` para documentar las APIs.
+   - Mantener configuraciones externas: `SPRING_APPLICATION_JSON`, `SPRING_DATASOURCE_*` o `Spring Cloud Config`.
