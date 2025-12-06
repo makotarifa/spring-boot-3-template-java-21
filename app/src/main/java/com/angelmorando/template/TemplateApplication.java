@@ -1,11 +1,10 @@
 package com.angelmorando.template;
 
-import org.mybatis.spring.annotation.MapperScan;
+// MyBatis mappers are scanned in app-persistence module via MyBatisConfig
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.angelmorando.template.repository.mybatis")
 public class TemplateApplication {
 
 	public static void main(String[] args) {

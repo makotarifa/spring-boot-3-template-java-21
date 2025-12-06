@@ -30,6 +30,21 @@ services:
     depends_on:
       - db
 
+  app:
+    build:
+      context: ../..
+      dockerfile: docker/app/Dockerfile
+    image: makotarifa/spring-boot-3-template-java-21:latest
+    container_name: template-app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/template
+      - SPRING_DATASOURCE_USERNAME=template
+      - SPRING_DATASOURCE_PASSWORD=template
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
 volumes:
   db_data:
     driver: local

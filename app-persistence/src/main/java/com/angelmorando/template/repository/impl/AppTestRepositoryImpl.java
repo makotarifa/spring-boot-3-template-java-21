@@ -1,19 +1,18 @@
 package com.angelmorando.template.repository.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+import lombok.RequiredArgsConstructor;
+
 import com.angelmorando.template.dao.AppTestDao;
 import com.angelmorando.template.dto.AppTest;
 import com.angelmorando.template.repository.AppTestRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class AppTestRepositoryImpl implements AppTestRepository {
     private final AppTestDao dao;
-
-    public AppTestRepositoryImpl(AppTestDao dao) {
-        this.dao = dao;
-    }
 
     @Override
     public List<AppTest> all() {

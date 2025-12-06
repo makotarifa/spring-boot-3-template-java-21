@@ -1,10 +1,11 @@
 package com.angelmorando.template.repository.mybatis;
 
-import com.angelmorando.template.dto.AppTest;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.angelmorando.template.dto.AppTest;
 
 @Mapper
 public interface AppTestMapper {

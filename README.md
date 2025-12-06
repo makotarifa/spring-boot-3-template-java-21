@@ -32,6 +32,15 @@ SPRING_DATASOURCE_PASSWORD=template \
 
 4. Swagger UI (OpenAPI): http://localhost:8080/swagger-ui/index.html
 
+Run with Docker Compose (app + db + pgAdmin):
+
+```bash
+cd docker/postgres
+docker-compose up --build -d
+```
+
+This builds the `app` image using the multi-stage Dockerfile and starts the app on port 8080.
+
 Example endpoints (AppTest):
 
 - List: `GET /api/app-tests` -> returns a JSON array of `AppTest` items.

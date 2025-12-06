@@ -1,8 +1,8 @@
 package com.angelmorando.template.repository;
 
-import com.angelmorando.template.dto.AppTest;
-
 import java.util.List;
+
+import com.angelmorando.template.dto.AppTest;
 
 public interface AppTestRepository {
     List<AppTest> all();
