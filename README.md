@@ -32,6 +32,18 @@ SPRING_DATASOURCE_PASSWORD=template \
 
 4. Swagger UI (OpenAPI): http://localhost:8080/swagger-ui/index.html
 
+Example endpoints (AppTest):
+
+- List: `GET /api/app-tests` -> returns a JSON array of `AppTest` items.
+- Create: `POST /api/app-tests` with JSON body `{ "name": "something" }` -> creates a new item.
+
+Example cURL:
+
+```bash
+curl -s http://localhost:8080/api/app-tests | jq
+curl -s -H "Content-Type: application/json" -d '{"name":"hello"}' -X POST http://localhost:8080/api/app-tests
+```
+
 Notes:
 - `common` is a library module - you can publish it separately for reuse.
 - If you split microservices later, keep `common` as a separate git submodule or artifact for reuse across services.
