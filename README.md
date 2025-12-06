@@ -44,7 +44,14 @@ cd docker/postgres
 docker-compose up --build -d
 ```
 
-This builds the `app-runner` image using the multi-stage Dockerfile and starts the app on port 8080.
+This builds the `app-runner` image using the multi-stage Dockerfile and starts the app.
+
+You can override the internal server port and host mapping used by Docker Compose with `SERVER_PORT` and `HOST_PORT` environment variables:
+
+```bash
+# Run the app inside the container on port 8081 and map to host port 8081:
+HOST_PORT=8081 SERVER_PORT=8081 docker-compose up --build -d
+```
 
 Example endpoints (AppTest):
 
