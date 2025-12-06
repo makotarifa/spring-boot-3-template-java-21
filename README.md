@@ -55,7 +55,7 @@ HOST_PORT=8081 SERVER_PORT=8081 docker-compose up --build -d
 
 Example endpoints (AppTest):
 
-- List: `GET /api/app-tests` -> returns a JSON array of `AppTest` items.
+- List: `GET /api/app-tests` -> returns a JSON array of `AppTestDto` items.
 - Create: `POST /api/app-tests` with JSON body `{ "name": "something" }` -> creates a new item.
 
 Example cURL:

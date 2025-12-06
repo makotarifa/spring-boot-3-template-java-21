@@ -1,11 +1,13 @@
 package com.angelmorando.template.service;
 
-import com.angelmorando.template.dto.AppTest;
-import com.angelmorando.template.repository.AppTestRepository;
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.angelmorando.template.domain.model.AppTest;
+import com.angelmorando.template.domain.repository.AppTestRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

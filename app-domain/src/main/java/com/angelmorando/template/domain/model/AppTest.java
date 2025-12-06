@@ -1,4 +1,4 @@
-package com.angelmorando.template.dto;
+package com.angelmorando.template.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

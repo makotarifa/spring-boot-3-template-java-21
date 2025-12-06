@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.angelmorando.template.dto.AppTest;
+import com.angelmorando.template.domain.model.AppTest;
 
 @Mapper
 public interface AppTestMapper {

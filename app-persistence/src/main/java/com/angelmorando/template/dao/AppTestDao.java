@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.angelmorando.template.dto.AppTest;
+import com.angelmorando.template.domain.model.AppTest;
 import com.angelmorando.template.repository.mybatis.AppTestMapper;
 
 import lombok.RequiredArgsConstructor;

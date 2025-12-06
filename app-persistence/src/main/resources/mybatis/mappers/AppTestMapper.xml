@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.angelmorando.template.repository.mybatis.AppTestMapper">
 
-  <resultMap id="AppTestResult" type="com.angelmorando.template.dto.AppTest">
+  <resultMap id="AppTestResult" type="com.angelmorando.template.domain.model.AppTest">
     <id property="id" column="id" />
     <result property="name" column="name" />
   </resultMap>
@@ -17,7 +17,7 @@
     SELECT id, name FROM app_test WHERE id = #{id}
   </select>
 
-  <insert id="insert" parameterType="com.angelmorando.template.dto.AppTest" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.angelmorando.template.domain.model.AppTest" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO app_test (name) VALUES (#{name})
   </insert>
 
