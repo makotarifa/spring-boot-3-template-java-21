@@ -3,7 +3,6 @@
 Esta guía describe cómo estructurar el proyecto para facilitar una futura separación en microservicios y cómo preparar OAuth y manejo centralizado de errores.
 
 1. Estructura de paquetes y módulos
-   - `app-runner` (módulo principal): contiene la aplicación Spring Boot, controladores y lógica de negocio.
    - `common` (módulo compartido): excepciones y utilidades que pueden ser compartidas entre servicios.
    - `app-domain` (módulo de dominio): entidades, objetos de valor (VO) y repositorios (interfaces) del dominio.
    - `app-dtos` (módulo de DTO): DTOs compartidos por la API, usados por `app-api`.
