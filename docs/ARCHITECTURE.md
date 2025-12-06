@@ -27,6 +27,16 @@ Al adoptar un diseño multi-módulo, puedes extraer servicios en el futuro en m�
    - `security`: Configuración y filtros de seguridad.
    - `exception`: Manejadores y DTOs de error centralizados.
 
+   DAO vs Repository:
+   - DAO: encapsula las consultas SQL y la interacción con la BD (por ejemplo con MyBatis mappers, JdbcTemplate u otra librería). Es el responsable de la conversión a objetos y del manejo de transacciones en el nivel más bajo.
+   - Repository: expone la API de dominio (operaciones como `save`, `find`, `findAll`) y utiliza la DAO internamente. Esto ayuda a mantener la lógica de negocio desacoplada de la tecnología de persistencia.
+
+   Implementación actual en el proyecto:
+   - DTO `AppTest` se encuentra en `common`.
+   - Mapper MyBatis `AppTestMapper` y su XML controlan las consultas SQL.
+   - `AppTestDao` usa el mapper para ejecutar consultas.
+   - `AppTestRepository` y `AppTestRepositoryImpl` exponen la API de dominio a la aplicación.
+
    Mantener una separación clara facilita extraer módulos/microservicios: cada microservicio tendría su propio `controller` y `service` pero podrían compartir `dto`, `security` y `exception` en una librería común.
 
 2. Autenticación y autorización (OAuth2/JWT)
