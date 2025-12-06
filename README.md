@@ -1,10 +1,6 @@
 # spring-boot-3-template-java-21
 
-This project is prepared for future migration into microservices. It is already divided into modules and renamed to `spring-boot-3-template-java-21`:
-
-- `app`: the main Spring Boot application (the service implementation)
-- `common`: shared DTOs, exceptions, and utilities used across services
-
+- `app-runner`: the main Spring Boot application (the service implementation)
 How to build and run locally:
 
 1. Build the project:
@@ -27,7 +23,7 @@ cd ..
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/template \
 SPRING_DATASOURCE_USERNAME=template \
 SPRING_DATASOURCE_PASSWORD=template \
-./gradlew :app:bootRun
+./gradlew :app-runner:bootRun
 ```
 
 4. Swagger UI (OpenAPI): http://localhost:8080/swagger-ui/index.html
@@ -40,6 +36,8 @@ docker-compose up --build -d
 ```
 
 This builds the `app` image using the multi-stage Dockerfile and starts the app on port 8080.
+
+This builds the `app-runner` image using the multi-stage Dockerfile and starts the app on port 8080.
 
 Example endpoints (AppTest):
 
