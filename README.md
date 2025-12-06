@@ -1,6 +1,6 @@
-# Template Multi-Module Spring Boot Project
+# spring-boot-3-template-java-21
 
-This project is prepared for future migration into microservices. It is already divided into modules:
+This project is prepared for future migration into microservices. It is already divided into modules and renamed to `spring-boot-3-template-java-21`:
 
 - `app`: the main Spring Boot application (the service implementation)
 - `common`: shared DTOs, exceptions, and utilities used across services

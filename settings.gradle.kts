@@ -1,4 +1,4 @@
-rootProject.name = "template"
+rootProject.name = "spring-boot-3-template-java-21"
 
 include("app", "common")
 
