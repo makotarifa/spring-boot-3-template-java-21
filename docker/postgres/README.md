@@ -21,7 +21,12 @@ Connection details (defaults):
 - Username: template
 - Password: template
 
-If you want to run your Spring Boot app in the same compose network (and resolve the DB host as 'db'), set `SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/template` in your app environment.
+If you want to run your Spring Boot app in the same compose network (and resolve the DB host as 'db'), set `SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/template` in your app environment. You can override the container and host ports using `SERVER_PORT` and `HOST_PORT` environment variables (defaults to 8080):
+
+```bash
+# Run docker compose with app on port 8081 host and 8081 container:
+HOST_PORT=8081 SERVER_PORT=8081 docker-compose up --build -d
+```
 
 PgAdmin is available at http://localhost:8081 with the credentials configured in compose.
 
