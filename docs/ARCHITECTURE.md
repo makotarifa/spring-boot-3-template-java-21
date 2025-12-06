@@ -3,9 +3,9 @@
 Esta guía describe cómo estructurar el proyecto para facilitar una futura separación en microservicios y cómo preparar OAuth y manejo centralizado de errores.
 
 1. Estructura de paquetes y módulos
-    - `app` (módulo principal): contiene la aplicación Spring Boot, controladores y lógica de negocio.
+   - `app-runner` (módulo principal): contiene la aplicación Spring Boot, controladores y lógica de negocio.
     - `common` (módulo compartido): DTOs, excepciones y utilidades que pueden ser compartidas entre servicios.
-    - `app` (módulo principal): módulo ejecutable que arranca Spring Boot, compone `app-api`, `app-service` y `app-persistence`.
+   - `app-runner` (módulo principal): módulo ejecutable que arranca Spring Boot, compone `app-api`, `app-service` y `app-persistence`.
     - `app-api`: controladores y DTOs expuestos al exterior (REST API).
     - `app-service`: lógica de negocio y servicios.
     - `app-persistence`: persistencia, mappers, DAOs y repositorios (encargados de consultar base de datos).
@@ -15,7 +15,7 @@ Ejemplo de estructura del proyecto (multi-módulo):
 - common/
    - src/main/java/com/angelmorando/template/exception
    - src/main/java/com/angelmorando/template/dto
-- app/
+- app-runner/
    - src/main/java/com/angelmorando/template/controller
    - src/main/java/com/angelmorando/template/service
    - src/main/resources

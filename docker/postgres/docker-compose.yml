@@ -30,12 +30,12 @@ services:
     depends_on:
       - db
 
-  app:
+  app-runner:
     build:
       context: ../..
       dockerfile: docker/app/Dockerfile
     image: makotarifa/spring-boot-3-template-java-21:latest
-    container_name: template-app
+    container_name: template-app-runner
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/template
       - SPRING_DATASOURCE_USERNAME=template
