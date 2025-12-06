@@ -24,6 +24,13 @@ SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/template \
 SPRING_DATASOURCE_USERNAME=template \
 SPRING_DATASOURCE_PASSWORD=template \
 ./gradlew :app-runner:bootRun
+
+Or use the helper task `runSingle` (defaults to `app-runner`):
+
+```bash
+./gradlew runSingle
+# or explicitly: ./gradlew runSingle -PrunProject=app-runner
+```
 ```
 
 4. Swagger UI (OpenAPI): http://localhost:8080/swagger-ui/index.html

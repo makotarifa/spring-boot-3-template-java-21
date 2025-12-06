@@ -20,3 +20,11 @@ subprojects {
 		useJUnitPlatform()
 	}
 }
+
+// Helper task to run a single module using bootRun. By default it runs app-runner.
+// Usage: ./gradlew runSingle -PrunProject=app-runner
+val runProjectName: String? = project.findProperty("runProject")?.toString()
+tasks.register("runSingle") {
+	val target = runProjectName ?: "app-runner"
+	dependsOn(":$target:bootRun")
+}
