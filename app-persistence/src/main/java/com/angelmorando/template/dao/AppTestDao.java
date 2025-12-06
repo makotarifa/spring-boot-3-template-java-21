@@ -3,10 +3,11 @@ package com.angelmorando.template.dao;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import lombok.RequiredArgsConstructor;
 
 import com.angelmorando.template.dto.AppTest;
 import com.angelmorando.template.repository.mybatis.AppTestMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: template
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/template}
+    username: ${SPRING_DATASOURCE_USERNAME:template}
+    password: ${SPRING_DATASOURCE_PASSWORD:template}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.postgresql.Driver}
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${SPRING_SECURITY_JWK_URI:}
+      client:
+        registration:
+          default:
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID:}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:}
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+
+mybatis:
+  mapper-locations: classpath:mybatis/mappers/*.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+
+app:
+  security:
+    enabled: false
+
+# Allow overriding the server port via environment variable `SERVER_PORT`, default 8080
+server:
+  port: ${SERVER_PORT:8080}

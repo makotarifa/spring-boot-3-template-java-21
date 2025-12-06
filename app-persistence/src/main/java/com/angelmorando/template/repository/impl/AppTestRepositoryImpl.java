@@ -3,11 +3,12 @@ package com.angelmorando.template.repository.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
-import lombok.RequiredArgsConstructor;
 
 import com.angelmorando.template.dao.AppTestDao;
 import com.angelmorando.template.dto.AppTest;
 import com.angelmorando.template.repository.AppTestRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor

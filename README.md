@@ -3,6 +3,8 @@
 - `app-runner`: the main Spring Boot application (the service implementation)
 How to build and run locally:
 
+Configuration: The project uses application.yml files (in each module's resources) instead of application.properties.
+
 1. Build the project:
 
 ```bash
