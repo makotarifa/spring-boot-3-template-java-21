@@ -44,3 +44,10 @@ app:
 # Allow overriding the server port via environment variable `SERVER_PORT`, default 8080
 server:
   port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    root: INFO
+    com.angelmorando.template: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
