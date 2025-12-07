@@ -29,7 +29,7 @@ spring:
       - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
 
 mybatis:
-  mapper-locations: classpath:mybatis/mappers/*.xml
+  mapper-locations: classpath:mybatis/dao/*.xml
 
 management:
   endpoints:

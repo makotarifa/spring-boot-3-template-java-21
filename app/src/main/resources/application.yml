@@ -24,7 +24,7 @@ spring:
             client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:}
 
 mybatis:
-  mapper-locations: classpath:mybatis/mappers/*.xml
+  mapper-locations: classpath:mybatis/dao/*.xml
 
 management:
   endpoints:
