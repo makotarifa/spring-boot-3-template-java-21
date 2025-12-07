@@ -4,7 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.angelmorando.template.repository.mybatis")
+@MapperScan("com.angelmorando.template.dao")
 public class MyBatisConfig {
 
 }

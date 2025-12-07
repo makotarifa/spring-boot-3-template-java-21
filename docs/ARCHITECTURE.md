@@ -39,8 +39,7 @@ Al adoptar un diseño multi-módulo, puedes extraer servicios en el futuro en m�
 
    Implementación actual en el proyecto:
    - DTO `AppTestDto` se encuentra en `app-dtos` (antes en `common`).
-   - Mapper MyBatis `AppTestMapper` y su XML controlan las consultas SQL.
-   - `AppTestDao` usa el mapper para ejecutar consultas.
+   - DAO MyBatis `AppTestDao` y su XML controlan las consultas SQL.
    - `AppTestRepository` (interface) se encuentra en `app-domain` y `AppTestRepositoryImpl` en `app-persistence` como implementación.
 
    Mantener una separación clara facilita extraer módulos/microservicios: cada microservicio tendría su propio `controller` y `service` pero podrían compartir `dto`, `security` y `exception` en una librería común.
