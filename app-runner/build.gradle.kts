@@ -36,6 +36,7 @@ dependencies {
     implementation(project(":app-service"))
     implementation(project(":app-persistence"))
     implementation(project(":common"))
+    implementation(project(":app-util"))
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
