@@ -13,13 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppUtilConfigTest {
 
-<<<<<<< HEAD
-        private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withUserConfiguration(AppUtilConfig.class, ValidationConfig.class, MetricsConfig.class);
-=======
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withUserConfiguration(AppUtilConfig.class, ValidationConfig.class, MetricsConfig.class);
->>>>>>> 71bbab4 (feat(app-util): add validation & metrics config, expose dependencies, and wire module into app-runner and app-service)
 
     @Test
     void beansArePresent() {
