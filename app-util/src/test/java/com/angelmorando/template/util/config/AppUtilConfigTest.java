@@ -13,8 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppUtilConfigTest {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withUserConfiguration(AppUtilConfig.class);
+        private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+            .withUserConfiguration(AppUtilConfig.class, ValidationConfig.class, MetricsConfig.class);
 
     @Test
     void beansArePresent() {
