@@ -1,0 +1,6 @@
+2025-12-07 03:41:41.878 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2025-12-07 03:41:41.911 [Test worker] INFO  c.a.t.TemplateApplicationTests - Starting TemplateApplicationTests using Java 21.0.9 with PID 10420 (started by makyg in C:\Users\makyg\Documents\template\app-runner)
+2025-12-07 03:41:41.912 [Test worker] DEBUG c.a.t.TemplateApplicationTests - Running with Spring Boot v3.5.8, Spring v6.2.14
+2025-12-07 03:41:41.913 [Test worker] INFO  c.a.t.TemplateApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-12-07 03:41:44.306 [Test worker] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-12-07 03:41:44.388 [Test worker] INFO  c.a.t.TemplateApplicationTests - Started TemplateApplicationTests in 2.817 seconds (process running for 3.65)
