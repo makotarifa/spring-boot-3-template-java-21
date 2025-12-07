@@ -20,4 +20,5 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+
 java { toolchain.languageVersion.set(JavaLanguageVersion.of(21)) }
