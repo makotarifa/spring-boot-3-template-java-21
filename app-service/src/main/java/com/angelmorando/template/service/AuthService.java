@@ -20,27 +20,27 @@ public class AuthService {
     private final com.angelmorando.template.service.JwtService jwtService;
 
     @Transactional
-    public void register(RegisterRequest request) {
-        var existing = dao.selectUserByUsername(request.getUsername());
+    public void register(com.angelmorando.template.domain.auth.User user) {
+        var existing = dao.selectUserByUsername(user.getUsername());
         if (existing != null) {
             throw new IllegalArgumentException("Username already exists");
         }
         UserRow row = UserRow.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .enabled(true)
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
+                .username(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .enabled(user.getEnabled() != null ? user.getEnabled() : true)
+                .accountNonExpired(user.getAccountNonExpired() != null ? user.getAccountNonExpired() : true)
+                .accountNonLocked(user.getAccountNonLocked() != null ? user.getAccountNonLocked() : true)
+                .credentialsNonExpired(user.getCredentialsNonExpired() != null ? user.getCredentialsNonExpired() : true)
                 .build();
         dao.insertUser(row);
-        dao.insertAuthority(request.getUsername(), "ROLE_USER");
+        dao.insertAuthority(user.getUsername(), "ROLE_USER");
     }
 
-    public AuthResponse login(LoginRequest request) {
-        var u = dao.selectUserByUsername(request.getUsername());
+    public AuthResponse login(String username, String password) {
+        var u = dao.selectUserByUsername(username);
         if (u == null) throw new IllegalArgumentException("Invalid credentials");
-        if (!passwordEncoder.matches(request.getPassword(), u.getPassword())) {
+        if (!passwordEncoder.matches(password, u.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
         // Create token

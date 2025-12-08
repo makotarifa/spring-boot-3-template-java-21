@@ -1,8 +1,7 @@
 package com.angelmorando.template.service;
 
 import com.angelmorando.template.service.dto.AuthResponse;
-import com.angelmorando.template.service.dto.LoginRequest;
-import com.angelmorando.template.service.dto.RegisterRequest;
+import com.angelmorando.template.domain.auth.User;
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
 import com.angelmorando.template.service.JwtService;
@@ -32,20 +31,17 @@ class AuthServiceTest {
     @Test
     void register_whenUserExists_throws() {
         when(dao.selectUserByUsername("u")).thenReturn(new UserRow());
-        RegisterRequest req = new RegisterRequest();
-        req.setUsername("u");
-        req.setPassword("password123");
-        assertThrows(IllegalArgumentException.class, () -> service.register(req));
+        // use domain User
+        com.angelmorando.template.domain.auth.User user = com.angelmorando.template.domain.auth.User.builder().username("u").password("password123").build();
+        assertThrows(IllegalArgumentException.class, () -> service.register(user));
     }
 
     @Test
     void register_success_insertsUser() {
         when(dao.selectUserByUsername(any())).thenReturn(null);
         when(passwordEncoder.encode(any())).thenReturn("hashed");
-        RegisterRequest req = new RegisterRequest();
-        req.setUsername("u");
-        req.setPassword("password123");
-        service.register(req);
+        com.angelmorando.template.domain.auth.User user = com.angelmorando.template.domain.auth.User.builder().username("u").password("password123").build();
+        service.register(user);
         verify(dao, times(1)).insertUser(any());
         verify(dao, times(1)).insertAuthority(eq("u"), eq("ROLE_USER"));
     }
@@ -53,10 +49,7 @@ class AuthServiceTest {
     @Test
     void login_whenInvalid_throws() {
         when(dao.selectUserByUsername("u")).thenReturn(null);
-        var req = new LoginRequest();
-        req.setUsername("u");
-        req.setPassword("p");
-        assertThrows(IllegalArgumentException.class, () -> service.login(req));
+        assertThrows(IllegalArgumentException.class, () -> service.login("u", "p"));
     }
 
     @Test
@@ -65,8 +58,7 @@ class AuthServiceTest {
         when(dao.selectUserByUsername("u")).thenReturn(row);
         when(passwordEncoder.matches("p", "encoded")).thenReturn(true);
         when(jwtService.createToken("u")).thenReturn("token");
-        var req = new LoginRequest(); req.setUsername("u"); req.setPassword("p");
-        AuthResponse resp = service.login(req);
+        AuthResponse resp = service.login("u", "p");
         assertNotNull(resp);
         assertEquals("token", resp.getToken());
     }

@@ -1,8 +1,8 @@
 package com.angelmorando.template.api.auth;
 
-import com.angelmorando.template.service.dto.AuthResponse;
-import com.angelmorando.template.service.dto.LoginRequest;
-import com.angelmorando.template.service.dto.RegisterRequest;
+import com.angelmorando.template.api.auth.dto.AuthResponse;
+import com.angelmorando.template.api.auth.dto.LoginRequest;
+import com.angelmorando.template.api.auth.dto.RegisterRequest;
 import com.angelmorando.template.api.ControllerUtils;
 import com.angelmorando.template.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,21 +28,26 @@ public class AuthController {
     @Operation(summary = "Register a new user")
     @PostMapping(ControllerUtils.REGISTER)
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request) {
-        authService.register(request);
+        com.angelmorando.template.domain.auth.User user = com.angelmorando.template.domain.auth.User.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .build();
+        authService.register(user);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Login and receive auth token cookie")
     @PostMapping(ControllerUtils.LOGIN)
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthResponse resp = authService.login(request);
+    public ResponseEntity<com.angelmorando.template.api.auth.dto.AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        com.angelmorando.template.service.dto.AuthResponse svcResp = authService.login(request.getUsername(), request.getPassword());
         // Set HttpOnly cookie
-        ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", resp.getToken())
+        ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", svcResp.getToken())
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(Duration.between(java.time.Instant.now(), resp.getExpiresAt()).getSeconds())
+                .maxAge(Duration.between(java.time.Instant.now(), svcResp.getExpiresAt()).getSeconds())
                 .build();
+        com.angelmorando.template.api.auth.dto.AuthResponse resp = new com.angelmorando.template.api.auth.dto.AuthResponse(svcResp.getToken(), svcResp.getExpiresAt(), svcResp.getUsername());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
     }
 }

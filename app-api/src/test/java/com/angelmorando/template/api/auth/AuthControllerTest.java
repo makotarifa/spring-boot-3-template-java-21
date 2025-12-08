@@ -2,8 +2,7 @@ package com.angelmorando.template.api.auth;
 
 import com.angelmorando.template.service.AuthService;
 import com.angelmorando.template.service.dto.AuthResponse;
-import com.angelmorando.template.service.dto.LoginRequest;
-import com.angelmorando.template.service.dto.RegisterRequest;
+import com.angelmorando.template.domain.auth.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Instant;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
@@ -29,7 +29,7 @@ class AuthControllerTest {
 
     @Test
     void register_happyPath() throws Exception {
-        Mockito.doNothing().when(authService).register(any(RegisterRequest.class));
+        Mockito.doNothing().when(authService).register(any(User.class));
         mvc.perform(post("/1.0/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"u\", \"password\":\"password123\"}"))
@@ -39,7 +39,7 @@ class AuthControllerTest {
     @Test
     void login_happyPath_setsCookie() throws Exception {
         var resp = new AuthResponse("token", Instant.now().plusSeconds(1800), "u");
-        Mockito.when(authService.login(any(LoginRequest.class))).thenReturn(resp);
+        Mockito.when(authService.login(anyString(), anyString())).thenReturn(resp);
         mvc.perform(post("/1.0/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"u\", \"password\":\"password123\"}"))
