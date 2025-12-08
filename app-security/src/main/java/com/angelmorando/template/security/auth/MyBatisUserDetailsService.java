@@ -11,19 +11,23 @@ import org.springframework.stereotype.Service;
 
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
+import com.angelmorando.template.mappers.auth.UserMapper;
 
 @Service
 public class MyBatisUserDetailsService implements UserDetailsService {
 
     private final UserAuthDao dao;
+    private final UserMapper userMapper;
 
-    public MyBatisUserDetailsService(UserAuthDao dao) {
+    public MyBatisUserDetailsService(UserAuthDao dao, UserMapper mapper) {
         this.dao = dao;
+        this.userMapper = mapper;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserRow u = dao.selectUserByUsername(username);
+        UserRow uRow = dao.selectUserByUsername(username);
+        var u = userMapper.toDomain(uRow);
         if (u == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
@@ -36,7 +40,7 @@ public class MyBatisUserDetailsService implements UserDetailsService {
         boolean enabled = u.getEnabled() == null || u.getEnabled();
 
         return User.withUsername(u.getUsername())
-                .password(u.getPassword())
+            .password(u.getPassword())
                 .authorities(authorities)
                 .disabled(!enabled)
                 .build();

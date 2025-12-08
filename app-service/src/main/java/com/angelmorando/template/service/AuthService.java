@@ -1,38 +1,37 @@
 package com.angelmorando.template.service;
 
-import com.angelmorando.template.service.dto.AuthResponse;
-import com.angelmorando.template.service.dto.LoginRequest;
-import com.angelmorando.template.service.dto.RegisterRequest;
-import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
-import com.angelmorando.template.persistence.auth.model.UserRow;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import com.angelmorando.template.domain.auth.User;
+import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.model.UserRow;
+import com.angelmorando.template.security.auth.TokenService;
+import com.angelmorando.template.mappers.auth.UserMapper;
+import com.angelmorando.template.service.dto.AuthResponse;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserAuthDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final com.angelmorando.template.security.auth.TokenService tokenService;
+    private final TokenService tokenService;
+    private final UserMapper userMapper;
 
     @Transactional
-    public void register(com.angelmorando.template.domain.auth.User user) {
+    public void register(User user) {
         var existing = dao.selectUserByUsername(user.getUsername());
         if (existing != null) {
             throw new IllegalArgumentException("Username already exists");
         }
-        UserRow row = UserRow.builder()
-                .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .enabled(user.getEnabled() != null ? user.getEnabled() : true)
-                .accountNonExpired(user.getAccountNonExpired() != null ? user.getAccountNonExpired() : true)
-                .accountNonLocked(user.getAccountNonLocked() != null ? user.getAccountNonLocked() : true)
-                .credentialsNonExpired(user.getCredentialsNonExpired() != null ? user.getCredentialsNonExpired() : true)
-                .build();
+        UserRow row = userMapper.toRow(user);
+        // ensure password is stored hashed
+        row.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.insertUser(row);
         dao.insertAuthority(user.getUsername(), "ROLE_USER");
     }

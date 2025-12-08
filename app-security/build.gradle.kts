@@ -24,6 +24,7 @@ dependencies {
     api(project(":common"))
     api(project(":app-util"))
     implementation(project(":app-persistence"))
+    implementation(project(":app-mappers"))
 
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")

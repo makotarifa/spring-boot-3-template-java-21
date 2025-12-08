@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":app-util"))
     implementation(project(":app-persistence"))
     implementation(project(":app-security"))
+    implementation(project(":app-mappers"))
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.nimbusds:nimbus-jose-jwt:9.31")
     implementation("org.springframework:spring-tx")

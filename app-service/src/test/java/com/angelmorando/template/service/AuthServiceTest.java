@@ -1,23 +1,28 @@
 package com.angelmorando.template.service;
 
-import com.angelmorando.template.service.dto.AuthResponse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.angelmorando.template.domain.auth.User;
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import com.angelmorando.template.service.dto.AuthResponse;
 
 class AuthServiceTest {
     private UserAuthDao dao;
     private PasswordEncoder passwordEncoder;
     private com.angelmorando.template.security.auth.TokenService tokenService;
+    private com.angelmorando.template.mappers.auth.UserMapper userMapper;
     private AuthService service;
 
     @BeforeEach
@@ -25,14 +30,15 @@ class AuthServiceTest {
         dao = Mockito.mock(UserAuthDao.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         tokenService = Mockito.mock(com.angelmorando.template.security.auth.TokenService.class);
-        service = new AuthService(dao, passwordEncoder, tokenService);
+        userMapper = Mockito.mock(com.angelmorando.template.mappers.auth.UserMapper.class);
+        service = new AuthService(dao, passwordEncoder, tokenService, userMapper);
     }
 
     @Test
     void register_whenUserExists_throws() {
         when(dao.selectUserByUsername("u")).thenReturn(new UserRow());
         // use domain User
-        com.angelmorando.template.domain.auth.User user = com.angelmorando.template.domain.auth.User.builder().username("u").password("password123").build();
+        User user = User.builder().username("u").password("password123").build();
         assertThrows(IllegalArgumentException.class, () -> service.register(user));
     }
 
@@ -40,7 +46,8 @@ class AuthServiceTest {
     void register_success_insertsUser() {
         when(dao.selectUserByUsername(any())).thenReturn(null);
         when(passwordEncoder.encode(any())).thenReturn("hashed");
-        com.angelmorando.template.domain.auth.User user = com.angelmorando.template.domain.auth.User.builder().username("u").password("password123").build();
+        User user = User.builder().username("u").password("password123").build();
+        when(userMapper.toRow(any(User.class))).thenReturn(UserRow.builder().username("u").password("password123").enabled(true).build());
         service.register(user);
         verify(dao, times(1)).insertUser(any());
         verify(dao, times(1)).insertAuthority(eq("u"), eq("ROLE_USER"));
