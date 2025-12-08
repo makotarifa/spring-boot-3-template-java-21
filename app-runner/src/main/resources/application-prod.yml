@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db:5432/template}
+    username: ${SPRING_DATASOURCE_USERNAME:template}
+    password: ${SPRING_DATASOURCE_PASSWORD:template}
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${SPRING_SECURITY_JWK_URI:http://localhost:8080/.well-known/jwks.json}
+      client:
+        registration:
+          demo:
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID:demo-client}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:demo-secret}
+            authorization-grant-type: client_credentials
+            scope: read,write
+
+app:
+  security:
+    enabled: true
+
+logging:
+  level:
+    com.angelmorando.template: INFO
+    org.springframework.security: DEBUG

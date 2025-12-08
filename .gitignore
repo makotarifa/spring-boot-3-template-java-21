@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore log directories created during test runs
+**/logs/
+**/*.log
