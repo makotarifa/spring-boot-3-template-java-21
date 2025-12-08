@@ -5,9 +5,11 @@ import com.angelmorando.template.persistence.auth.model.UserRow;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@ConditionalOnProperty(name = "app.security.enabled", havingValue = "true", matchIfMissing = false)
 public class UserSeeder {
 
     @Bean
