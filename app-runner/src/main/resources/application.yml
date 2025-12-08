@@ -43,6 +43,10 @@ management:
 app:
   security:
     enabled: false
+    registered-clients:
+      seed: false
+      demo-secret: ""
+      web-secret: ""
 
 # Allow overriding the server port via environment variable `SERVER_PORT`, default 8080
 server:
