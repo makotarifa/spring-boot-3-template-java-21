@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class MyBatisUserDetailsService implements UserDetailsService {
@@ -30,10 +28,10 @@ public class MyBatisUserDetailsService implements UserDetailsService {
 
         List<String> auths = dao.selectAuthoritiesByUsername(username);
         var authorities = auths.stream()
-                .map(a -> new org.springframework.security.core.authority.SimpleGrantedAuthority(a))
-                .collect(Collectors.toList());
+                .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
+                .toList();
 
-        boolean enabled = u.getEnabled() == null ? true : u.getEnabled();
+        boolean enabled = u.getEnabled() == null || u.getEnabled();
 
         return User.withUsername(u.getUsername())
                 .password(u.getPassword())

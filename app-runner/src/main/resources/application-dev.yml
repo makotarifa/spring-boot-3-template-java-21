@@ -31,4 +31,4 @@ server:
 
 logging:
   level:
-    com.angelmorando.template: DEBUG
+    '[com.angelmorando.template]': DEBUG

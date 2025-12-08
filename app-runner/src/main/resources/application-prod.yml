@@ -29,5 +29,5 @@ app:
 
 logging:
   level:
-    com.angelmorando.template: INFO
-    org.springframework.security: DEBUG
+    '[com.angelmorando.template]': INFO
+    '[org.springframework.security]': DEBUG

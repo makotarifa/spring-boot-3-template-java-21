@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             // configure as a resource server for JWTs; customize jwk-set-uri in properties
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
 
         return http.build();
     }
