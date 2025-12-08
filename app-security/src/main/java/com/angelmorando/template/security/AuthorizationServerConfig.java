@@ -67,8 +67,9 @@ public class AuthorizationServerConfig {
 
     @Bean
     public AuthorizationServerSettings providerSettings() {
+        String issuer = System.getenv().getOrDefault("SPRING_SECURITY_OAUTH2_ISSUER","http://localhost:8080");
         return AuthorizationServerSettings.builder()
-            .issuer("http://localhost:8080")
+            .issuer(issuer)
             .build();
     }
 
