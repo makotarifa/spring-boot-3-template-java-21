@@ -16,12 +16,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${SPRING_SECURITY_JWK_URI:}
+          jwk-set-uri: ${SPRING_SECURITY_JWK_URI:http://localhost:8080/.well-known/jwks.json}
       client:
         registration:
           default:
-            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID:}
-            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:}
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID:demo-client}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:demo-secret}
+            authorization-grant-type: client_credentials
+            scope: read,write
+
 
   autoconfigure:
     exclude:

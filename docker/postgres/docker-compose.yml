@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:14-alpine
     container_name: template-db
     environment:
       POSTGRES_USER: template
@@ -37,9 +37,13 @@ services:
     image: makotarifa/spring-boot-3-template-java-21:latest
     container_name: template-app-runner
     environment:
+      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/template
       - SPRING_DATASOURCE_USERNAME=template
       - SPRING_DATASOURCE_PASSWORD=template
+      - SPRING_SECURITY_OAUTH2_CLIENT_ID=demo-client
+      - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=demo-secret
+      - SPRING_SECURITY_JWK_URI=http://app-runner:8080/.well-known/jwks.json
       - SERVER_PORT=${SERVER_PORT:-8080}
       - HOST_PORT=${HOST_PORT:-8080}
     ports:

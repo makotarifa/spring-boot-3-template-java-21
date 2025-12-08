@@ -10,6 +10,7 @@ repositories { mavenCentral() }
 dependencies {
     api(project(":app-domain"))
     api(project(":app-dtos"))
+    implementation(project(":app-util"))
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     compileOnly("org.projectlombok:lombok")
