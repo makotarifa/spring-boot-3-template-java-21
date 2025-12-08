@@ -1,14 +1,13 @@
-package com.angelmorando.template.persistence.auth.dao;
-
-import java.util.List;
+package com.angelmorando.template.persistence.legacy.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import com.angelmorando.template.persistence.auth.model.UserRow;
 
 @Mapper
-public interface UserAuthDao {
+public interface UserAuthDaoLegacy {
     UserRow selectUserByUsername(@Param("username") String username);
     List<String> selectAuthoritiesByUsername(@Param("username") String username);
 

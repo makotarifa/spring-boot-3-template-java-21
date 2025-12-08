@@ -18,8 +18,8 @@ spring:
       client:
         registration:
           demo:
-            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID:demo-client}
-            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET:demo-secret}
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_ID}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_SECRET}
             authorization-grant-type: client_credentials
             scope: read,write
 

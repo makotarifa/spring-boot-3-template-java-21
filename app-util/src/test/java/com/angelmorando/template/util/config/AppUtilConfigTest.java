@@ -11,7 +11,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class AppUtilConfigTest {
+class AppUtilConfigTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withUserConfiguration(AppUtilConfig.class, ValidationConfig.class, MetricsConfig.class);

@@ -1,19 +1,19 @@
-package com.angelmorando.template.security.resourceserver;
+package com.angelmorando.template.security;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.core.userdetails.UserDetailsService;
 import com.angelmorando.template.security.auth.MyBatisUserDetailsService;
+import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnProperty(name = "app.security.enabled", havingValue = "true", matchIfMissing = false)
-public class ResourceServerConfig {
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

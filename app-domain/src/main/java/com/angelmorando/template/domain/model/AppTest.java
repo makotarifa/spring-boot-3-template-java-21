@@ -1,0 +1,13 @@
+package com.angelmorando.template.domain.apptest.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppTest {
+    private Integer id;
+    private String name;
+}
