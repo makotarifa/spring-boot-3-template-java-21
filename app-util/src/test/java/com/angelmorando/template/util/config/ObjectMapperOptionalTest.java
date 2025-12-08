@@ -1,34 +1,32 @@
 package com.angelmorando.template.util.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-public class ObjectMapperOptionalTest {
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+class ObjectMapperOptionalTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withUserConfiguration(AppUtilConfig.class, ValidationConfig.class, MetricsConfig.class);
 
     @Test
-    void optionalEmptyWhenMissingAndEmptyWhenNull() throws Exception {
+    void optionalEmptyWhenMissingAndEmptyWhenNull() {
         contextRunner.run(context -> {
-            ObjectMapper mapper = context.getBean(ObjectMapper.class);
+            var mapper = context.getBean(ObjectMapper.class);
             String missingJson = "{\"name\":\"test\"}";
             String nullJson = "{\"name\":\"test\", \"opt\": null}";
             TestDto t1 = mapper.readValue(missingJson, TestDto.class);
-            assertThat(t1.opt).isNotNull();
-            assertThat(t1.opt.isPresent()).isFalse();
+            assertThat(t1.opt).isEmpty();
             TestDto t2 = mapper.readValue(nullJson, TestDto.class);
-            assertThat(t2.opt).isNotNull();
-            assertThat(t2.opt.isPresent()).isFalse();
+            assertThat(t2.opt).isEmpty();
         });
     }
 
     private static class TestDto {
-        public String name;
         public Optional<String> opt = Optional.empty();
     }
 
