@@ -1,12 +1,12 @@
-package com.angelmorando.template.repository.impl;
+package com.angelmorando.template.persistence.apptest.repository;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.angelmorando.template.dao.AppTestDao;
-import com.angelmorando.template.domain.model.AppTest;
-import com.angelmorando.template.domain.repository.AppTestRepository;
+import com.angelmorando.template.persistence.apptest.dao.AppTestDao;
+import com.angelmorando.template.domain.apptest.model.AppTest;
+import com.angelmorando.template.domain.apptest.repository.AppTestRepository;
 
 import lombok.RequiredArgsConstructor;
 

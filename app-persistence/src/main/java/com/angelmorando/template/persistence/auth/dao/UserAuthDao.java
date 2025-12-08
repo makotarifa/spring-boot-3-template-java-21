@@ -1,16 +1,16 @@
-package com.angelmorando.template.dao;
+package com.angelmorando.template.persistence.auth.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
+import com.angelmorando.template.persistence.auth.model.UserRow;
 
 @Mapper
 public interface UserAuthDao {
-    Map<String, Object> selectUserByUsername(@Param("username") String username);
+    UserRow selectUserByUsername(@Param("username") String username);
     List<String> selectAuthoritiesByUsername(@Param("username") String username);
 
-    int insertUser(Map<String, Object> user);
+    int insertUser(UserRow user);
     int insertAuthority(@Param("username") String username, @Param("authority") String authority);
 }

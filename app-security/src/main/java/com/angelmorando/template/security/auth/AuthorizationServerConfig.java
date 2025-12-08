@@ -1,4 +1,4 @@
-package com.angelmorando.template.security;
+package com.angelmorando.template.security.auth; 
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

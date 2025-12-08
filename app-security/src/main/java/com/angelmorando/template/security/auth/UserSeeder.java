@@ -1,13 +1,11 @@
-package com.angelmorando.template.security;
+package com.angelmorando.template.security.auth; 
 
-import com.angelmorando.template.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.model.UserRow;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class UserSeeder {
@@ -17,14 +15,14 @@ public class UserSeeder {
         return args -> {
             // seed a basic user if not exists
             var existing = dao.selectUserByUsername("user");
-            if (existing == null || existing.isEmpty()) {
-                Map<String, Object> user = new HashMap<>();
-                user.put("username", "user");
-                user.put("password", encoder.encode("password"));
-                user.put("enabled", true);
-                user.put("accountNonExpired", true);
-                user.put("accountNonLocked", true);
-                user.put("credentialsNonExpired", true);
+            if (existing == null) {
+                UserRow user = new UserRow();
+                user.setUsername("user");
+                user.setPassword(encoder.encode("password"));
+                user.setEnabled(true);
+                user.setAccountNonExpired(true);
+                user.setAccountNonLocked(true);
+                user.setCredentialsNonExpired(true);
                 dao.insertUser(user);
                 dao.insertAuthority("user", "ROLE_USER");
             }

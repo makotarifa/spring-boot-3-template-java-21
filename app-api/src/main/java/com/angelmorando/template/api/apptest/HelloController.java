@@ -1,4 +1,4 @@
-package com.angelmorando.template.controller;
+package com.angelmorando.template.api.apptest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

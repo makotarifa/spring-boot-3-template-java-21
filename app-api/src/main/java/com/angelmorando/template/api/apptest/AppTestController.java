@@ -1,4 +1,4 @@
-package com.angelmorando.template.controller;
+package com.angelmorando.template.api.apptest;
 
 import java.net.URI;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.angelmorando.template.dto.AppTestDto;
-import com.angelmorando.template.service.AppTestService;
-import com.angelmorando.template.mapper.AppTestDtoMapper;
+import com.angelmorando.template.dtos.apptest.AppTestDto;
+import com.angelmorando.template.service.apptest.AppTestService;
+import com.angelmorando.template.mappers.apptest.AppTestDtoMapper;
 
 import lombok.RequiredArgsConstructor;
 

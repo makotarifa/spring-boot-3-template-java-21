@@ -1,6 +1,7 @@
-package com.angelmorando.template.security;
+package com.angelmorando.template.security.auth; 
 
-import com.angelmorando.template.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.model.UserRow;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,8 +23,8 @@ public class MyBatisUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Map<String, Object> u = dao.selectUserByUsername(username);
-        if (u == null || u.isEmpty()) {
+        UserRow u = dao.selectUserByUsername(username);
+        if (u == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
 
@@ -32,10 +33,10 @@ public class MyBatisUserDetailsService implements UserDetailsService {
                 .map(a -> new org.springframework.security.core.authority.SimpleGrantedAuthority(a))
                 .collect(Collectors.toList());
 
-        boolean enabled = u.get("enabled") == null ? true : Boolean.parseBoolean(String.valueOf(u.get("enabled")));
+        boolean enabled = u.getEnabled() == null ? true : u.getEnabled();
 
-        return User.withUsername((String) u.get("username"))
-                .password((String) u.get("password"))
+        return User.withUsername(u.getUsername())
+                .password(u.getPassword())
                 .authorities(authorities)
                 .disabled(!enabled)
                 .build();

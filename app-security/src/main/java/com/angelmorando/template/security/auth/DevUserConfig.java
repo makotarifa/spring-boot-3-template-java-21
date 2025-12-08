@@ -1,4 +1,4 @@
-package com.angelmorando.template.security;
+package com.angelmorando.template.security.auth; 
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

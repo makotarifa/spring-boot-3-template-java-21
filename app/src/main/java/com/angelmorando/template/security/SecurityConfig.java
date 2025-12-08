@@ -1,4 +1,4 @@
-package com.angelmorando.template.security;
+package com.angelmorando.template.security; 
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

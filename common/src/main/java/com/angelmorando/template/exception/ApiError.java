@@ -3,10 +3,10 @@ package com.angelmorando.template.exception;
 import java.time.OffsetDateTime;
 
 public class ApiError {
-    private OffsetDateTime timestamp;
-    private int status;
-    private String error;
-    private String message;
+    private final OffsetDateTime timestamp;
+    private final int status;
+    private final String error;
+    private final String message;
 
     public ApiError(OffsetDateTime timestamp, int status, String error, String message) {
         this.timestamp = timestamp;

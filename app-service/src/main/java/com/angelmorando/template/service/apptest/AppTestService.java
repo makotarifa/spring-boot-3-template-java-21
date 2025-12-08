@@ -1,11 +1,11 @@
-package com.angelmorando.template.service;
+package com.angelmorando.template.service.apptest;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.angelmorando.template.domain.model.AppTest;
-import com.angelmorando.template.domain.repository.AppTestRepository;
+import com.angelmorando.template.domain.apptest.model.AppTest;
+import com.angelmorando.template.domain.apptest.repository.AppTestRepository;
 
 import lombok.RequiredArgsConstructor;
 
