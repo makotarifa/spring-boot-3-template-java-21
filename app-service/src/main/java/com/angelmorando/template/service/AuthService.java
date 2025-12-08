@@ -17,7 +17,7 @@ import java.time.Instant;
 public class AuthService {
     private final UserAuthDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final com.angelmorando.template.service.JwtService jwtService;
+    private final com.angelmorando.template.security.auth.TokenService tokenService;
 
     @Transactional
     public void register(com.angelmorando.template.domain.auth.User user) {
@@ -44,8 +44,8 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid credentials");
         }
         // Create token
-        var token = jwtService.createToken(u.getUsername());
-        Instant expiresAt = Instant.now().plusSeconds(jwtService.getExpirySeconds());
+        var token = tokenService.createToken(u.getUsername());
+        Instant expiresAt = Instant.now().plusSeconds(tokenService.getExpirySeconds());
         return new AuthResponse(token, expiresAt, u.getUsername());
     }
 }

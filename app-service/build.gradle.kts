@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":app-util"))
     implementation(project(":app-persistence"))
+    implementation(project(":app-security"))
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.nimbusds:nimbus-jose-jwt:9.31")
     implementation("org.springframework:spring-tx")
@@ -19,4 +20,5 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.2")
 }

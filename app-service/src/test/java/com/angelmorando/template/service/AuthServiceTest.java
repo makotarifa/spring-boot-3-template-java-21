@@ -4,7 +4,7 @@ import com.angelmorando.template.service.dto.AuthResponse;
 import com.angelmorando.template.domain.auth.User;
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
-import com.angelmorando.template.service.JwtService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,15 +17,15 @@ import static org.mockito.Mockito.*;
 class AuthServiceTest {
     private UserAuthDao dao;
     private PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
+    private com.angelmorando.template.security.auth.TokenService tokenService;
     private AuthService service;
 
     @BeforeEach
     void setup() throws Exception {
         dao = Mockito.mock(UserAuthDao.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
-        jwtService = Mockito.mock(JwtService.class);
-        service = new AuthService(dao, passwordEncoder, jwtService);
+        tokenService = Mockito.mock(com.angelmorando.template.security.auth.TokenService.class);
+        service = new AuthService(dao, passwordEncoder, tokenService);
     }
 
     @Test
@@ -57,7 +57,7 @@ class AuthServiceTest {
         UserRow row = UserRow.builder().username("u").password("encoded").enabled(true).build();
         when(dao.selectUserByUsername("u")).thenReturn(row);
         when(passwordEncoder.matches("p", "encoded")).thenReturn(true);
-        when(jwtService.createToken("u")).thenReturn("token");
+        when(tokenService.createToken("u")).thenReturn("token");
         AuthResponse resp = service.login("u", "p");
         assertNotNull(resp);
         assertEquals("token", resp.getToken());

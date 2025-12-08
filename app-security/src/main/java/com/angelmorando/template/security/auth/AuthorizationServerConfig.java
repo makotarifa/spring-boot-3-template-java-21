@@ -67,22 +67,15 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        try {
-            KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
-            gen.initialize(2048);
-            KeyPair kp = gen.generateKeyPair();
-            RSAPublicKey publicKey = (RSAPublicKey) kp.getPublic();
-            RSAPrivateKey privateKey = (RSAPrivateKey) kp.getPrivate();
-            RSAKey rsaJwk = new RSAKey.Builder(publicKey)
-                    .privateKey(privateKey)
-                    .keyID(UUID.randomUUID().toString())
-                    .build();
-            var jwkSet = new JWKSet(rsaJwk);
-            return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
+    public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        RSAKey rsaJwk = new RSAKey.Builder(publicKey)
+                .privateKey(privateKey)
+                .keyID(UUID.randomUUID().toString())
+                .build();
+        var jwkSet = new JWKSet(rsaJwk);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
     @Bean

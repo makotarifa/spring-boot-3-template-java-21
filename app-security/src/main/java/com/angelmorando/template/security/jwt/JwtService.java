@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
-@Service
+@Service("securityJwtService")
 public class JwtService {
     @Value("${app.security.auth.jwt.secret:}")
     private String jwtSecret;
