@@ -1,14 +1,16 @@
 package com.angelmorando.template.security.auth; 
 
-import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
-import com.angelmorando.template.persistence.auth.model.UserRow;
+import java.util.List;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
+import com.angelmorando.template.persistence.auth.model.UserRow;
 
 @Service
 public class MyBatisUserDetailsService implements UserDetailsService {
@@ -28,7 +30,7 @@ public class MyBatisUserDetailsService implements UserDetailsService {
 
         List<String> auths = dao.selectAuthoritiesByUsername(username);
         var authorities = auths.stream()
-                .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
+                .map(SimpleGrantedAuthority::new)
                 .toList();
 
         boolean enabled = u.getEnabled() == null || u.getEnabled();
