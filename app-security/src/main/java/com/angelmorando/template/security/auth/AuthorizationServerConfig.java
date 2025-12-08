@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.server.authorization.JdbcOAuth2Author
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.security.web.SecurityFilterChain;
+import java.security.NoSuchAlgorithmException;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -79,7 +80,7 @@ public class AuthorizationServerConfig {
                     .build();
             var jwkSet = new JWKSet(rsaJwk);
             return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
-        } catch (java.security.NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
     }
