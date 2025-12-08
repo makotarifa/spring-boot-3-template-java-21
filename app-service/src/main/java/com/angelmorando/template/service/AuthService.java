@@ -37,8 +37,9 @@ public class AuthService {
     }
 
     public AuthResponse login(String username, String password) {
-        var u = dao.selectUserByUsername(username);
-        if (u == null) throw new IllegalArgumentException("Invalid credentials");
+        var uRow = dao.selectUserByUsername(username);
+        if (uRow == null) throw new IllegalArgumentException("Invalid credentials");
+        var u = userMapper.toDomain(uRow);
         if (!passwordEncoder.matches(password, u.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
         }

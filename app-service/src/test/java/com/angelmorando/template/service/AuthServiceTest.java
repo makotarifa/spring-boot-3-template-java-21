@@ -64,6 +64,7 @@ class AuthServiceTest {
         UserRow row = UserRow.builder().username("u").password("encoded").enabled(true).build();
         when(dao.selectUserByUsername("u")).thenReturn(row);
         when(passwordEncoder.matches("p", "encoded")).thenReturn(true);
+        when(userMapper.toDomain(row)).thenReturn(User.builder().username("u").password("encoded").enabled(true).build());
         when(tokenService.createToken("u")).thenReturn("token");
         AuthResponse resp = service.login("u", "p");
         assertNotNull(resp);

@@ -8,21 +8,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
 import com.angelmorando.template.mappers.auth.UserMapper;
 
 @Service
+@RequiredArgsConstructor
 public class MyBatisUserDetailsService implements UserDetailsService {
 
     private final UserAuthDao dao;
     private final UserMapper userMapper;
 
-    public MyBatisUserDetailsService(UserAuthDao dao, UserMapper mapper) {
-        this.dao = dao;
-        this.userMapper = mapper;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

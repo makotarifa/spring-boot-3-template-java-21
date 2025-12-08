@@ -1,8 +1,8 @@
 package com.angelmorando.template.api.auth.dto;
 
-import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Data
 public class RegisterRequest {
