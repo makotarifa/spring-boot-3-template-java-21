@@ -12,6 +12,8 @@ import com.angelmorando.template.persistence.auth.model.UserRow;
 import com.angelmorando.template.security.auth.TokenService;
 import com.angelmorando.template.mappers.auth.UserMapper;
 import com.angelmorando.template.service.dto.AuthResponse;
+import com.angelmorando.template.exception.UserAlreadyExistsException;
+import com.angelmorando.template.exception.InvalidCredentialsException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +29,7 @@ public class AuthService {
     public void register(User user) {
         var existing = dao.selectUserByUsername(user.getUsername());
         if (existing != null) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new UserAlreadyExistsException("Username already exists");
         }
         UserRow row = userMapper.toRow(user);
         // ensure password is stored hashed
@@ -38,10 +40,10 @@ public class AuthService {
 
     public AuthResponse login(String username, String password) {
         var uRow = dao.selectUserByUsername(username);
-        if (uRow == null) throw new IllegalArgumentException("Invalid credentials");
+        if (uRow == null) throw new InvalidCredentialsException("Invalid credentials");
         var u = userMapper.toDomain(uRow);
         if (!passwordEncoder.matches(password, u.getPassword())) {
-            throw new IllegalArgumentException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid credentials");
         }
         // Create token
         var token = tokenService.createToken(u.getUsername());

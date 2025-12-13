@@ -19,6 +19,8 @@ import com.angelmorando.template.persistence.auth.model.UserRow;
 import com.angelmorando.template.service.dto.AuthResponse;
 import com.angelmorando.template.security.auth.TokenService;
 import com.angelmorando.template.mappers.auth.UserMapper;
+import com.angelmorando.template.exception.InvalidCredentialsException;
+import com.angelmorando.template.exception.UserAlreadyExistsException;
 
 class AuthServiceTest {
     private UserAuthDao dao;
@@ -41,7 +43,7 @@ class AuthServiceTest {
         when(dao.selectUserByUsername("u")).thenReturn(new UserRow());
         // use domain User
         User user = User.builder().username("u").password("password123").build();
-        assertThrows(IllegalArgumentException.class, () -> service.register(user));
+        assertThrows(UserAlreadyExistsException.class, () -> service.register(user));
     }
 
     @Test
@@ -58,7 +60,7 @@ class AuthServiceTest {
     @Test
     void login_whenInvalid_throws() {
         when(dao.selectUserByUsername("u")).thenReturn(null);
-        assertThrows(IllegalArgumentException.class, () -> service.login("u", "p"));
+        assertThrows(InvalidCredentialsException.class, () -> service.login("u", "p"));
     }
 
     @Test
