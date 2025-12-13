@@ -38,7 +38,7 @@ class AuthControllerTest {
         mvc.perform(post("/api/v1/register").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"u\", \"password\":\"password123\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

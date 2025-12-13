@@ -14,6 +14,7 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,10 @@ import java.time.Duration;
 @Tag(name = "Auth")
 public class AuthController {
     private final AuthService authService;
+    @Value("${app.security.cookie.secure:false}")
+    private boolean cookieSecure;
+    @Value("${app.security.cookie.same-site:Lax}")
+    private String cookieSameSite;
 
     @Operation(summary = "Register a new user")
     @PostMapping(ControllerUtils.REGISTER)
@@ -34,7 +39,7 @@ public class AuthController {
                 .password(request.getPassword())
                 .build();
         authService.register(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Login and receive auth token cookie")
@@ -43,8 +48,9 @@ public class AuthController {
         com.angelmorando.template.service.dto.AuthResponse svcResp = authService.login(request.getUsername(), request.getPassword());
         ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", svcResp.getToken())
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .path("/")
+                .sameSite(cookieSameSite)
                 .maxAge(Duration.between(java.time.Instant.now(), svcResp.getExpiresAt()).getSeconds())
                 .build();
         AuthResponse resp = new AuthResponse(svcResp.getToken(), svcResp.getExpiresAt(), svcResp.getUsername());

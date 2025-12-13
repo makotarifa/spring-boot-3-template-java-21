@@ -27,6 +27,9 @@ app:
     enabled: true
     cors:
       allowed-origins: "http://localhost:3000"
+    cookie:
+      secure: false
+      same-site: Lax
 
 server:
   port: 8080

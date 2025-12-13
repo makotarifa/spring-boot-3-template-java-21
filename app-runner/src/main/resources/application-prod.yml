@@ -28,6 +28,9 @@ app:
     enabled: true
     cors:
       allowed-origins: "${APP_ALLOWED_ORIGINS:}"
+    cookie:
+      secure: true
+      same-site: Strict
 
 logging:
   level:
