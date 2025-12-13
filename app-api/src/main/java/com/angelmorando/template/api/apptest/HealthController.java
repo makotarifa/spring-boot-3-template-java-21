@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HealthController {
 
-    @GetMapping("/health")
+    @GetMapping(com.angelmorando.template.api.ControllerUtils.HEALTH)
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("OK");
     }

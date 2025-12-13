@@ -26,6 +26,8 @@ spring:
 app:
   security:
     enabled: true
+    cors:
+      allowed-origins: "${APP_ALLOWED_ORIGINS:}"
 
 logging:
   level:

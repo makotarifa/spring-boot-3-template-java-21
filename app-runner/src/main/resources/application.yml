@@ -43,6 +43,8 @@ management:
 app:
   security:
     enabled: false
+    cors:
+      allowed-origins: ""
     registered-clients:
       seed: false
       demo-secret: ""

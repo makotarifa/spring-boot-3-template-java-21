@@ -17,7 +17,7 @@ import com.angelmorando.template.mappers.apptest.AppTestDtoMapper;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/app-tests")
+@RequestMapping(com.angelmorando.template.api.ControllerUtils.APP_TESTS)
 @RequiredArgsConstructor
 public class AppTestController {
     private final AppTestService service;
@@ -32,6 +32,6 @@ public class AppTestController {
     public ResponseEntity<AppTestDto> create(@RequestBody AppTestDto appTest) {
         var domain = mapper.toDomain(appTest);
         var saved = service.create(domain);
-        return ResponseEntity.created(URI.create("/api/app-tests/" + saved.getId())).body(mapper.toDto(saved));
+        return ResponseEntity.created(URI.create(com.angelmorando.template.api.ControllerUtils.APP_TESTS + "/" + saved.getId())).body(mapper.toDto(saved));
     }
 }

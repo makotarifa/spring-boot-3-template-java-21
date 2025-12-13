@@ -9,20 +9,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import com.angelmorando.template.security.auth.MyBatisUserDetailsService;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.beans.factory.annotation.Value;
+import java.util.List;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.angelmorando.template.util.config.RateLimitingFilter;
 
 @Configuration
 @ConditionalOnProperty(name = "app.security.enabled", havingValue = "true", matchIfMissing = false)
 public class ResourceServerConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/actuator/**","/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
+                .requestMatchers("/actuator/**","/api/v1/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
             )
-            // configure as a resource server for JWTs; customize jwk-set-uri in properties
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
+            .cors(cors -> {})
+            .csrf(csrf -> csrf.disable())
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}))
+            .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -35,5 +44,20 @@ public class ResourceServerConfig {
     @Bean
     public UserDetailsService myBatisUserDetailsService(MyBatisUserDetailsService myBatisService) {
         return myBatisService;
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.security.cors.allowed-origins:}") String origins) {
+        CorsConfiguration configuration = new CorsConfiguration();
+        if (origins != null && !origins.isBlank()) {
+            configuration.setAllowedOrigins(List.of(origins.split(",")));
+        }
+        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization","Content-Type","Accept"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

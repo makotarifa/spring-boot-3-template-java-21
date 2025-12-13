@@ -35,7 +35,7 @@ class AuthControllerTest {
     @Test
     void register_happyPath() throws Exception {
         Mockito.doNothing().when(authService).register(any(User.class));
-        mvc.perform(post("/1.0/register").with(csrf())
+        mvc.perform(post("/api/v1/register").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"u\", \"password\":\"password123\"}"))
                 .andExpect(status().isOk());
@@ -45,7 +45,7 @@ class AuthControllerTest {
     void login_happyPath_setsCookie() throws Exception {
         var resp = new AuthResponse("token", Instant.now().plusSeconds(1800), "u");
         Mockito.when(authService.login(anyString(), anyString())).thenReturn(resp);
-        mvc.perform(post("/1.0/login").with(csrf())
+        mvc.perform(post("/api/v1/login").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"u\", \"password\":\"password123\"}"))
                 .andExpect(status().isOk())

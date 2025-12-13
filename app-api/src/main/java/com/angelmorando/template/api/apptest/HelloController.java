@@ -10,13 +10,13 @@ import com.angelmorando.template.service.HelloService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(com.angelmorando.template.api.ControllerUtils.API_BASE)
 @RequiredArgsConstructor
 public class HelloController {
 
     private final HelloService helloService;
 
-    @GetMapping("/hello")
+    @GetMapping(com.angelmorando.template.api.ControllerUtils.HELLO)
     public ResponseEntity<String> hello() {
         return ResponseEntity.ok(helloService.sayHello());
     }
