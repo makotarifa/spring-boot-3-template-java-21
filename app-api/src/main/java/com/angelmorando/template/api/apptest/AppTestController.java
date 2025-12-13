@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.angelmorando.template.dtos.apptest.AppTestDto;
 import com.angelmorando.template.service.apptest.AppTestService;
 import com.angelmorando.template.mappers.apptest.AppTestDtoMapper;
+import com.angelmorando.template.api.ControllerUtils;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(com.angelmorando.template.api.ControllerUtils.APP_TESTS)
+@RequestMapping(ControllerUtils.APP_TESTS)
 @RequiredArgsConstructor
 public class AppTestController {
     private final AppTestService service;
@@ -32,6 +33,6 @@ public class AppTestController {
     public ResponseEntity<AppTestDto> create(@RequestBody AppTestDto appTest) {
         var domain = mapper.toDomain(appTest);
         var saved = service.create(domain);
-        return ResponseEntity.created(URI.create(com.angelmorando.template.api.ControllerUtils.APP_TESTS + "/" + saved.getId())).body(mapper.toDto(saved));
+        return ResponseEntity.created(URI.create(ControllerUtils.APP_TESTS + "/" + saved.getId())).body(mapper.toDto(saved));
     }
 }

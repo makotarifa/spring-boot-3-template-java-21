@@ -17,20 +17,22 @@ import com.angelmorando.template.domain.auth.User;
 import com.angelmorando.template.persistence.auth.dao.UserAuthDao;
 import com.angelmorando.template.persistence.auth.model.UserRow;
 import com.angelmorando.template.service.dto.AuthResponse;
+import com.angelmorando.template.security.auth.TokenService;
+import com.angelmorando.template.mappers.auth.UserMapper;
 
 class AuthServiceTest {
     private UserAuthDao dao;
     private PasswordEncoder passwordEncoder;
-    private com.angelmorando.template.security.auth.TokenService tokenService;
-    private com.angelmorando.template.mappers.auth.UserMapper userMapper;
+    private TokenService tokenService;
+    private UserMapper userMapper;
     private AuthService service;
 
     @BeforeEach
     void setup() throws Exception {
         dao = Mockito.mock(UserAuthDao.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
-        tokenService = Mockito.mock(com.angelmorando.template.security.auth.TokenService.class);
-        userMapper = Mockito.mock(com.angelmorando.template.mappers.auth.UserMapper.class);
+        tokenService = Mockito.mock(TokenService.class);
+        userMapper = Mockito.mock(UserMapper.class);
         service = new AuthService(dao, passwordEncoder, tokenService, userMapper);
     }
 
