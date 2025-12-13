@@ -5,6 +5,13 @@ How to build and run locally:
 
 Configuration: The project uses application.yml files (in each module's resources) instead of application.properties.
 
+Security and DX highlights:
+- API versioning under `/api/v1`
+- Stateless auth with JWT and HttpOnly cookie `AUTH_TOKEN`
+- CORS configuration with credential safety
+- Fixed-window rate limiting for `/api/v1/login` and `/api/v1/register`
+- Standardized error handling via Spring `ProblemDetail`
+
 1. Build the project:
 
 ```bash
@@ -53,6 +60,13 @@ You can override the internal server port and host mapping used by Docker Compos
 HOST_PORT=8081 SERVER_PORT=8081 docker-compose up --build -d
 ```
 
+Bootstrap (Windows):
+
+```powershell
+./scripts/bootstrap.ps1
+# Loads env from .env (quoted values supported) and starts docker/postgres
+```
+
 Example endpoints (AppTest):
 
 - List: `GET /api/app-tests` -> returns a JSON array of `AppTestDto` items.
@@ -64,6 +78,25 @@ Example cURL:
 curl -s http://localhost:8080/api/app-tests | jq
 curl -s -H "Content-Type: application/json" -d '{"name":"hello"}' -X POST http://localhost:8080/api/app-tests
 ```
+
+Auth endpoints:
+- Register: `POST /api/v1/register` body `{ "username": "user", "password": "password123" }` → `204 No Content`
+- Login: `POST /api/v1/login` body `{ "username": "user", "password": "password123" }` → sets `Set-Cookie: AUTH_TOKEN=...; HttpOnly;` and returns `{ "username": "...", "expiresAt": "..." }`
+- Health: `GET /api/v1/health` → `200 OK`
+
+Dev seed user:
+- Username: `user`
+- Password: `password123`
+
+Configuration (dev/prod):
+- `app.security.enabled`: enable security stack
+- `app.security.auth.algorithm`: `hs256` (dev) or `rs256` (prod)
+- `app.security.auth.issuer`: token issuer
+- `app.security.auth.jwt.secret`: HS256 secret (dev)
+- `app.security.auth.rsa.private-key-pem` / `public-key-pem`: RS256 keys (prod)
+- `app.security.cors.allowed-origins`: comma-separated origins; credentials only enabled when this is set
+- `app.security.cookie.secure` and `app.security.cookie.same-site`
+- `app.rate-limit.paths`, `app.rate-limit.capacity`, `app.rate-limit.refill-period-seconds`, `app.rate-limit.trust-x-forwarded-for`
 
 Notes:
 - `common` is a library module - you can publish it separately for reuse.
