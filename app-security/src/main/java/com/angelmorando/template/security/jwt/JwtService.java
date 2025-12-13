@@ -15,13 +15,17 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.auth.algorithm", havingValue = "hs256", matchIfMissing = true)
 @Service("securityJwtService")
-public class JwtService {
+public class JwtService implements com.angelmorando.template.security.auth.TokenService {
     @Value("${app.security.auth.jwt.secret:}")
     private String jwtSecret;
 
     @Value("${app.security.auth.jwt.expiry-seconds:1800}")
     private long expirySeconds;
+
+    @Value("${app.security.auth.issuer:http://localhost:8080}")
+    private String issuer;
 
     private byte[] secretBytes;
     private OctetSequenceKey jwk;
@@ -38,11 +42,13 @@ public class JwtService {
         signer = new MACSigner(secretBytes);
     }
 
+    @Override
     public String createToken(String subject) {
         try {
             Instant now = Instant.now();
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(subject)
+                    .issuer(issuer)
                     .issueTime(Date.from(now))
                     .expirationTime(Date.from(now.plusSeconds(expirySeconds)))
                     .claim("scope", "ROLE_USER")
@@ -56,5 +62,6 @@ public class JwtService {
         }
     }
 
+    @Override
     public long getExpirySeconds() { return expirySeconds; }
 }

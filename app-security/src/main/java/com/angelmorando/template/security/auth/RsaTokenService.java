@@ -16,12 +16,16 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.auth.algorithm", havingValue = "rs256")
 @Service
 public class RsaTokenService implements TokenService {
     private final KeyPair keyPair;
 
     @Value("${app.security.auth.jwt.expiry-seconds:1800}")
     private long expirySeconds;
+
+    @Value("${app.security.auth.issuer:http://localhost:8080}")
+    private String issuer;
 
     private JWSSigner signer;
 
@@ -40,6 +44,7 @@ public class RsaTokenService implements TokenService {
             Instant now = Instant.now();
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(subject)
+                    .issuer(issuer)
                     .issueTime(Date.from(now))
                     .expirationTime(Date.from(now.plusSeconds(expirySeconds)))
                     .claim("scope", "ROLE_USER")

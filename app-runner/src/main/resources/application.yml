@@ -49,6 +49,11 @@ app:
       seed: false
       demo-secret: ""
       web-secret: ""
+    auth:
+      algorithm: hs256
+      issuer: http://localhost:8080
+      jwt:
+        expiry-seconds: 1800
 
 # Allow overriding the server port via environment variable `SERVER_PORT`, default 8080
 server:

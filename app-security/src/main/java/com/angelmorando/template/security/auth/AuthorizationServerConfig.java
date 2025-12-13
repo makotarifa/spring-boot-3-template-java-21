@@ -59,8 +59,9 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public AuthorizationServerSettings providerSettings() {
-        String issuer = System.getenv().getOrDefault("SPRING_SECURITY_OAUTH2_ISSUER","http://localhost:8080");
+    public AuthorizationServerSettings providerSettings(
+        @org.springframework.beans.factory.annotation.Value("${app.security.auth.issuer:http://localhost:8080}") String issuer
+    ) {
         return AuthorizationServerSettings.builder()
             .issuer(issuer)
             .build();

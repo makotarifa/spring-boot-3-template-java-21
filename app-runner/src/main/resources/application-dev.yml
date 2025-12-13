@@ -30,6 +30,12 @@ app:
     cookie:
       secure: false
       same-site: Lax
+    auth:
+      algorithm: hs256
+      issuer: http://localhost:8080
+      jwt:
+        secret: ${APP_JWT_SECRET:dev-secret-change}
+        expiry-seconds: 1800
 
 server:
   port: 8080

@@ -31,6 +31,14 @@ app:
     cookie:
       secure: true
       same-site: Strict
+    auth:
+      algorithm: rs256
+      issuer: ${SPRING_SECURITY_OAUTH2_ISSUER:https://yourdomain}
+      jwt:
+        expiry-seconds: 1800
+      rsa:
+        private-key-pem: ${APP_JWT_RSA_PRIVATE_PEM:}
+        public-key-pem: ${APP_JWT_RSA_PUBLIC_PEM:}
 
 logging:
   level:
