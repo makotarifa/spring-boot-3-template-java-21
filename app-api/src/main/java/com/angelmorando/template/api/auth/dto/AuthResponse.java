@@ -10,7 +10,6 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
-    private String token; // optional for frontend
     private Instant expiresAt;
     private String username;
 }

@@ -53,7 +53,7 @@ public class AuthController {
                 .sameSite(cookieSameSite)
                 .maxAge(Duration.between(java.time.Instant.now(), svcResp.getExpiresAt()).getSeconds())
                 .build();
-        AuthResponse resp = new AuthResponse(svcResp.getToken(), svcResp.getExpiresAt(), svcResp.getUsername());
+        AuthResponse resp = new AuthResponse(svcResp.getExpiresAt(), svcResp.getUsername());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
     }
 }
