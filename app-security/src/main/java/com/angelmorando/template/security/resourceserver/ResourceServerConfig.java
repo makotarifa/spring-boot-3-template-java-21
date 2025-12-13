@@ -25,7 +25,7 @@ public class ResourceServerConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/actuator/**","/api/v1/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
+                .requestMatchers("/actuator/**","/api/v1/health","/v3/api-docs/**","/swagger-ui/**","/api/v1/register","/api/v1/login").permitAll()
                 .anyRequest().authenticated()
             )
             .cors(cors -> {})

@@ -45,11 +45,13 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             Window window = windows.computeIfAbsent(key, k -> new Window(System.currentTimeMillis(), new AtomicLong(0)));
             long now = System.currentTimeMillis();
             long periodMs = refillPeriodSeconds * 1000L;
-            if (now - window.start >= periodMs) {
-                window.start = now;
-                window.count.set(0);
+            long startSnapshot = window.start.get();
+            if (now - startSnapshot >= periodMs) {
+                if (window.start.compareAndSet(startSnapshot, now)) {
+                    window.count.set(0);
+                }
             }
-            if (now - window.start > periodMs * 60) {
+            if (now - window.start.get() > periodMs * 60) {
                 windows.remove(key);
             }
             long current = window.count.incrementAndGet();
@@ -77,8 +79,8 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     }
 
     static class Window {
-        volatile long start;
+        final java.util.concurrent.atomic.AtomicLong start;
         final AtomicLong count;
-        Window(long start, AtomicLong count) { this.start = start; this.count = count; }
+        Window(long start, AtomicLong count) { this.start = new java.util.concurrent.atomic.AtomicLong(start); this.count = count; }
     }
 }
