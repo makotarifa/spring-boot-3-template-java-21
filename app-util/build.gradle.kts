@@ -18,7 +18,7 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-actuator")
     api("io.micrometer:micrometer-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.2")
 }
 
 
