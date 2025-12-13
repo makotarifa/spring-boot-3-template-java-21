@@ -25,6 +25,9 @@ public class MyBatisUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserRow uRow = dao.selectUserByUsername(username);
+        if (uRow == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
         var u = userMapper.toDomain(uRow);
         if (u == null) {
             throw new UsernameNotFoundException("User not found: " + username);
