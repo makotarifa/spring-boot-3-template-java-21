@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ### OAuth2 Token (client_credentials)
 POST http://localhost:8080/oauth2/token
-Authorization: Basic {{base64 demo-client:DEMO_SECRET}}
+Authorization: Basic {{base64 demo-client:DEMO_SECRET}} # Para VS Code REST Client/IntelliJ HTTP. Alternativa: usar el valor base64 real.
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=client_credentials&scope=read

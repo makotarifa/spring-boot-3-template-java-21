@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.enabled", havingValue = "true", matchIfMissing = false)
 @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.auth.algorithm", havingValue = "rs256")
 @Service
 public class RsaTokenService implements TokenService {

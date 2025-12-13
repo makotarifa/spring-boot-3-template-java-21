@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.enabled", havingValue = "true", matchIfMissing = false)
 @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.security.auth.algorithm", havingValue = "hs256", matchIfMissing = true)
 @Service("securityJwtService")
 public class JwtService implements com.angelmorando.template.security.auth.TokenService {
@@ -34,8 +35,7 @@ public class JwtService implements com.angelmorando.template.security.auth.Token
     @PostConstruct
     public void init() throws Exception {
         if (jwtSecret == null || jwtSecret.isBlank()) {
-            // generate 256-bit random secret for dev
-            jwtSecret = UUID.randomUUID().toString().replace("-", "") + UUID.randomUUID().toString().replace("-", "");
+            throw new IllegalStateException("JWT secret is not set. Configure 'app.security.auth.jwt.secret'.");
         }
         secretBytes = jwtSecret.getBytes();
         jwk = new OctetSequenceKey.Builder(secretBytes).keyID(UUID.randomUUID().toString()).build();

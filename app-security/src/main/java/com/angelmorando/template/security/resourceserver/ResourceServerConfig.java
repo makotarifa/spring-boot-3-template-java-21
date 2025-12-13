@@ -52,10 +52,12 @@ public class ResourceServerConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         if (origins != null && !origins.isBlank()) {
             configuration.setAllowedOrigins(List.of(origins.split(",")));
+            configuration.setAllowCredentials(true);
+        } else {
+            configuration.setAllowCredentials(false);
         }
         configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type","Accept"));
-        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

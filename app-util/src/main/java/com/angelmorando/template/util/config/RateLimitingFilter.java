@@ -23,14 +23,17 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     private final long capacity;
     private final long refillPeriodSeconds;
     private final Map<String, Window> windows = new ConcurrentHashMap<>();
+    private final boolean trustXForwardedFor;
 
     public RateLimitingFilter(
             @Value("${app.rate-limit.paths:/api/v1/login,/api/v1/register}") String paths,
             @Value("${app.rate-limit.capacity:10}") long capacity,
-            @Value("${app.rate-limit.refill-period-seconds:1}") long refillPeriodSeconds) {
+            @Value("${app.rate-limit.refill-period-seconds:1}") long refillPeriodSeconds,
+            @Value("${app.rate-limit.trust-x-forwarded-for:false}") boolean trustXForwardedFor) {
         this.protectedPaths = Stream.of(paths.split(",")).map(String::trim).collect(Collectors.toSet());
         this.capacity = capacity;
         this.refillPeriodSeconds = refillPeriodSeconds;
+        this.trustXForwardedFor = trustXForwardedFor;
     }
 
     @Override
@@ -46,10 +49,16 @@ public class RateLimitingFilter extends OncePerRequestFilter {
                 window.start = now;
                 window.count.set(0);
             }
+            if (now - window.start > periodMs * 60) {
+                windows.remove(key);
+            }
             long current = window.count.incrementAndGet();
             if (current > capacity) {
                 response.setStatus(429);
                 response.setHeader("Retry-After", String.valueOf(refillPeriodSeconds));
+                response.setContentType("application/problem+json");
+                String body = "{\"type\":\"about:blank\",\"title\":\"Too Many Requests\",\"status\":429,\"detail\":\"Rate limit exceeded\",\"retryAfter\":" + refillPeriodSeconds + "}";
+                response.getWriter().write(body);
                 return;
             }
         }
@@ -57,8 +66,13 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     }
 
     private String clientKey(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isBlank()) ip = request.getRemoteAddr();
+        String ip = request.getRemoteAddr();
+        if (trustXForwardedFor) {
+            String header = request.getHeader("X-Forwarded-For");
+            if (header != null && !header.isBlank()) {
+                ip = header.split(",")[0].trim();
+            }
+        }
         return ip;
     }
 
