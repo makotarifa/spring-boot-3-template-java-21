@@ -37,7 +37,7 @@ class AuthControllerTest {
         Mockito.doNothing().when(authService).register(any(User.class));
         mvc.perform(post("/api/v1/register").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"u\", \"password\":\"password123\"}"))
+                .content("{\"username\":\"u\", \"password\":\"Password123!\"}"))
                 .andExpect(status().isNoContent());
     }
 

@@ -11,5 +11,7 @@ public class RegisterRequest {
 
     @NotBlank
     @Size(min = 8)
+    @jakarta.validation.constraints.Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$",
+            message = "Password must include upper, lower, number and special character")
     private String password;
 }

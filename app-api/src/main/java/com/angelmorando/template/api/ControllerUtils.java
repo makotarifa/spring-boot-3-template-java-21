@@ -9,4 +9,6 @@ public final class ControllerUtils {
     public static final String HEALTH = API_BASE + "/health";
     public static final String HELLO = API_BASE + "/hello";
     public static final String APP_TESTS = API_BASE + "/app-tests";
+    public static final String ME = API_BASE + "/me";
+    public static final String LOGOUT = API_BASE + "/logout";
 }

@@ -6,6 +6,7 @@ import com.angelmorando.template.api.auth.dto.RegisterRequest;
 import com.angelmorando.template.api.ControllerUtils;
 import com.angelmorando.template.service.AuthService;
 import com.angelmorando.template.domain.auth.User;
+import com.angelmorando.template.api.auth.dto.MeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -54,5 +55,25 @@ public class AuthController {
                 .build();
         AuthResponse resp = new AuthResponse(svcResp.getExpiresAt(), svcResp.getUsername());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(resp);
+    }
+
+    @Operation(summary = "Get current user info from cookie-authenticated session")
+    @org.springframework.web.bind.annotation.GetMapping(ControllerUtils.ME)
+    public ResponseEntity<MeResponse> me(java.security.Principal principal) {
+        MeResponse resp = new MeResponse(principal.getName(), java.util.List.of());
+        return ResponseEntity.ok(resp);
+    }
+
+    @Operation(summary = "Logout and clear auth cookie")
+    @PostMapping(ControllerUtils.LOGOUT)
+    public ResponseEntity<Void> logout() {
+        ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", "")
+                .httpOnly(true)
+                .secure(cookieSecure)
+                .path("/")
+                .sameSite(cookieSameSite)
+                .maxAge(0)
+                .build();
+        return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 }
