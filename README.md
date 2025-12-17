@@ -11,6 +11,8 @@ Security and DX highlights:
 - CORS configuration with credential safety
 - Fixed-window rate limiting for `/api/v1/login` and `/api/v1/register`
 - Standardized error handling via Spring `ProblemDetail`
+- Convenience endpoints: `GET /api/v1/me`, `POST /api/v1/logout`
+- Strong password validation on register (uppercase, lowercase, number, special)
 
 1. Build the project:
 
