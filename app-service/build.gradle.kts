@@ -15,7 +15,7 @@ dependencies {
     implementation(project(":app-security"))
     implementation(project(":app-mappers"))
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("com.nimbusds:nimbus-jose-jwt:9.31")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.48")
     implementation("org.springframework:spring-tx")
     implementation("org.springframework.boot:spring-boot-starter")
     compileOnly("org.projectlombok:lombok")
