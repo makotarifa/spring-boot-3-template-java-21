@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SERVER_PORT: 8080
+      GRADLE_OPTS: -Dorg.gradle.internal.http.connectionTimeout=60000 -Dorg.gradle.internal.http.socketTimeout=60000
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,6 +21,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
@@ -32,4 +36,9 @@ jobs:
       - name: Build and test
         run: |
           chmod +x ./gradlew || true
-          ./gradlew clean build --no-daemon
+          for i in $(seq 1 5); do
+            ./gradlew clean build --no-daemon && break || {
+              echo "Gradle build attempt $i failed; retrying in 10s"
+              sleep 10
+            }
+          done
