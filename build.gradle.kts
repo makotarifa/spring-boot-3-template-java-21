@@ -15,7 +15,7 @@ subprojects {
 	// Configure the dependency management extension to import Spring Boot BOM
 	configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
 		imports {
-			mavenBom("org.springframework.boot:spring-boot-dependencies:3.5.8")
+			mavenBom("org.springframework.boot:spring-boot-dependencies:3.5.9")
 		}
 	}
 	tasks.withType<Test> {
