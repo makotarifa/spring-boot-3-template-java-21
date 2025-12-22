@@ -52,3 +52,34 @@ jobs:
                 core.info(`Comentado en PR #${num}`);
               }
             }
+            const { data: closed } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              per_page: 100,
+            });
+            for (const pr of closed) {
+              if (pr.user && pr.user.login === 'dependabot[bot]') {
+                const num = pr.number;
+                if (!include) {
+                  const { data: comments } = await github.rest.issues.listComments({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: num,
+                    per_page: 100,
+                  });
+                  const exists = comments.some(c => (c.body || '').includes('@dependabot reopen'));
+                  if (exists) {
+                    core.info(`PR cerrada #${num} ya tiene el comentario, se omite.`);
+                    continue;
+                  }
+                }
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: num,
+                  body: '@dependabot reopen',
+                });
+                core.info(`Comentado reopen en PR cerrada #${num}`);
+              }
+            }
