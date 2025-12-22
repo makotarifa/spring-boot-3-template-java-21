@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: template-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+    networks:
+      - template_network
+
+volumes:
+  prometheus_data:
+
+networks:
+  template_network:
+    external: true
