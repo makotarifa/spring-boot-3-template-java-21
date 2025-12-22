@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     # Ignore major version updates to minimize breaking changes
     ignore:
       - dependency-name: "*"
@@ -13,7 +13,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
