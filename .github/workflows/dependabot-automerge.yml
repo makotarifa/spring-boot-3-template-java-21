@@ -24,22 +24,34 @@ jobs:
           set -euo pipefail
           echo "Waiting for checks to complete..."
           
+          # Timeout in seconds (e.g., 30 minutes)
+          TIMEOUT=1800
+          START_TIME=$(date +%s)
+          
           while true; do
+            CURRENT_TIME=$(date +%s)
+            ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
+            
+            if [ "$ELAPSED_TIME" -ge "$TIMEOUT" ]; then
+              echo "Timeout reached ($TIMEOUT seconds). Failing workflow."
+              exit 1
+            fi
+
             # Fetch checks in JSON
             # Filter out the current job 'automerge' to avoid deadlock
             checks_json=$(gh pr checks ${{ github.event.pull_request.number }} --json name,status,conclusion)
             
             # Check if any check OTHER than 'automerge' is pending
-            pending_count=$(echo "$checks_json" | jq '[.[] | select(.name | contains("automerge") | not) | select(.status != "completed")] | length')
+            pending_count=$(echo "$checks_json" | jq '[.[] | select(.name != "Dependabot Auto Merge / automerge") | select(.status != "completed")] | length')
             
             if [ "$pending_count" -gt 0 ]; then
-              echo "$pending_count checks are still pending..."
+              echo "$pending_count checks are still pending... (Elapsed: ${ELAPSED_TIME}s)"
               sleep 30
               continue
             fi
             
             # Check for failures (excluding us)
-            fail_count=$(echo "$checks_json" | jq '[.[] | select(.name | contains("automerge") | not) | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length')
+            fail_count=$(echo "$checks_json" | jq '[.[] | select(.name != "Dependabot Auto Merge / automerge") | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length')
             
             if [ "$fail_count" -gt 0 ]; then
               echo "Some checks failed or were cancelled."
