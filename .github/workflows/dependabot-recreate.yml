@@ -1,0 +1,54 @@
+name: Dependabot Recreate
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_already_commented:
+        description: "Comentar aunque ya exista"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const include = core.getInput('include_already_commented') === 'true';
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            for (const pr of prs) {
+              if (pr.user && pr.user.login === 'dependabot[bot]') {
+                const num = pr.number;
+                if (!include) {
+                  const { data: comments } = await github.rest.issues.listComments({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: num,
+                    per_page: 100,
+                  });
+                  const exists = comments.some(c => (c.body || '').includes('@dependabot recreate'));
+                  if (exists) {
+                    core.info(`PR #${num} ya tiene el comentario, se omite.`);
+                    continue;
+                  }
+                }
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: num,
+                  body: '@dependabot recreate',
+                });
+                core.info(`Comentado en PR #${num}`);
+              }
+            }
