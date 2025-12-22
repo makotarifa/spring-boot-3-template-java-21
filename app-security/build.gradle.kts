@@ -29,7 +29,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.5.3")
+    implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.5.5")
     implementation("com.nimbusds:nimbus-jose-jwt:9.47")
 
     compileOnly("org.projectlombok:lombok")
