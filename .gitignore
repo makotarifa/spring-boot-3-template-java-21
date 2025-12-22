@@ -39,3 +39,6 @@ out/
 # Ignore log directories created during test runs
 **/logs/
 **/*.log
+ 
+### MCP local env ###
+mcp/*.env
