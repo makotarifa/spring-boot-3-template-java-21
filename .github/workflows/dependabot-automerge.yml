@@ -24,8 +24,7 @@ jobs:
           set -euo pipefail
           echo "Waiting for checks to complete..."
           
-          # Timeout in seconds (e.g., 30 minutes)
-          TIMEOUT=1800
+          TIMEOUT=600
           START_TIME=$(date +%s)
           
           while true; do
