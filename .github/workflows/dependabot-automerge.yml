@@ -22,25 +22,37 @@ jobs:
       - name: Wait for CI and auto-approve PR
         run: |
           set -euo pipefail
-          sha="${{ github.event.pull_request.head.sha }}"
-          echo "Waiting for CI checks to complete for commit ${sha} in ${GITHUB_REPOSITORY}..."
-          # Poll the combined status for this commit until it is no longer 'pending'
+          echo "Waiting for checks to complete..."
+          
           while true; do
-            state=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${sha}/status" --jq '.state')
-            echo "Current combined status: ${state}"
-            if [ "${state}" = "pending" ]; then
-              echo "Status checks are still pending. Sleeping for 30 seconds..."
+            # Fetch checks in JSON
+            # Filter out the current job 'automerge' to avoid deadlock
+            checks_json=$(gh pr checks ${{ github.event.pull_request.number }} --json name,status,conclusion)
+            
+            # Check if any check OTHER than 'automerge' is pending
+            pending_count=$(echo "$checks_json" | jq '[.[] | select(.name | contains("automerge") | not) | select(.status != "completed")] | length')
+            
+            if [ "$pending_count" -gt 0 ]; then
+              echo "$pending_count checks are still pending..."
               sleep 30
               continue
             fi
-            if [ "${state}" != "success" ]; then
-              echo "Status checks did not succeed (state=${state}). Not approving this pull request."
+            
+            # Check for failures (excluding us)
+            fail_count=$(echo "$checks_json" | jq '[.[] | select(.name | contains("automerge") | not) | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length')
+            
+            if [ "$fail_count" -gt 0 ]; then
+              echo "Some checks failed or were cancelled."
+              echo "$checks_json" | jq '.[] | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")'
               exit 1
             fi
-            echo "All status checks succeeded. Approving pull request #${{ github.event.pull_request.number }}."
-            gh pr review --approve "${{ github.event.pull_request.number }}"
+            
+            echo "All checks passed."
             break
           done
+          
+          echo "Approving PR..."
+          gh pr review --approve "${{ github.event.pull_request.number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
